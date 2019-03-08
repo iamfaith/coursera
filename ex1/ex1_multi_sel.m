@@ -82,81 +82,31 @@ X = [ones(m, 1) X];
 fprintf('Running gradient descent ...\n');
 
 % Choose some alpha value
-alpha = 0.01;
+alpha = 0.3;
 num_iters = 400;
-
-% Init Theta and Run Gradient Descent
-theta = zeros(3, 1);
-[theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters);
-
-% Plot the convergence graph
+cc=hsv(12);
+count = 6;
 figure;
-plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
-xlabel('Number of iterations');
-ylabel('Cost J');
+hold on;
+for i = 1:count
 
-% Display gradient descent's result
-fprintf('Theta computed from gradient descent: \n');
-fprintf(' %f \n', theta);
-fprintf('\n');
+    % Init Theta and Run Gradient Descent
+    theta = zeros(3, 1);
+    [theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters);
 
-% Estimate the price of a 1650 sq-ft, 3 br house
-% ====================== YOUR CODE HERE ======================
-% Recall that the first column of X is all-ones. Thus, it does
-% not need to be normalized.
-d = [1650 3];
-d = (d - mu) ./ sigma;
-d = [ones(1, 1) d];
-price = d * theta; % You should change this
+    % Plot the convergence graph
+    plot(1:numel(J_history), J_history, 'color', cc(i,:), 'LineWidth', 2);
+    xlabel('Number of iterations');
+    ylabel('Cost J');
+    legend_names{i} = sprintf("alpha:%f",alpha);
+    % Display gradient descent's result
+    fprintf('Theta computed from gradient descent: \n');
+    fprintf(' %f \n', theta);
+    fprintf('\n');
 
+    alpha = alpha / 3;
+end
 
-% ============================================================
-
-fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
-         '(using gradient descent):\n $%f\n'], price);
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
-%% ================ Part 3: Normal Equations ================
-
-fprintf('Solving with normal equations...\n');
-
-% ====================== YOUR CODE HERE ======================
-% Instructions: The following code computes the closed form
-%               solution for linear regression using the normal
-%               equations. You should complete the code in
-%               normalEqn.m
-%
-%               After doing so, you should complete this code
-%               to predict the price of a 1650 sq-ft, 3 br house.
-%
-
-%% Load Data
-data = csvread('ex1data2.txt');
-X = data(:, 1:2);
-y = data(:, 3);
-m = length(y);
-
-% Add intercept term to X
-X = [ones(m, 1) X];
-
-% Calculate the parameters from the normal equation
-theta = normalEqn(X, y);
-
-% Display normal equation's result
-fprintf('Theta computed from the normal equations: \n');
-fprintf(' %f \n', theta);
-fprintf('\n');
-
-
-% Estimate the price of a 1650 sq-ft, 3 br house
-% ====================== YOUR CODE HERE ======================
-price = 0; % You should change this
-
-
-% ============================================================
-
-fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
-         '(using normal equations):\n $%f\n'], price);
+disp(legend_names);
+legend(legend_names);
 
