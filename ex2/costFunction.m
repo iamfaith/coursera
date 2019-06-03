@@ -20,17 +20,19 @@ grad = zeros(size(theta));
 % Note: grad should have the same dimensions as theta
 %
 
-
 J = (1 / m) * sum( -y'*log(sigmoid(X*theta)) - (1-y)'*log( 1 - sigmoid(X*theta)) );
 
-disp("!!!!!!!!!!!!!!!!!!!")
-
-disp(size(repmat((sigmoid(X*theta) - y), 1, size(X,2))))
 
 % grad = (1 / m) * sum((sigmoid(X) - y') * X'))
-grad = (1 / m) * sum( X .* repmat((sigmoid(X*theta) - y), 1, size(X,2)) );
-
-disp("~~~~~~~~~~~~~~~")
+% grad = (1 / m) * sum( X .* repmat((sigmoid(X*theta) - y), 1, size(X,2)) );
+% disp('-----')
+% disp(size(X'))
+% disp(size(sigmoid(X*theta) - y))
+% disp(grad)
+grad = ((1/m)*X'*(sigmoid(X*theta) - y))';
+% disp(delta)
+% disp('-----')
+% pause
 
 % =============================================================
 
